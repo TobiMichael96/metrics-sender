@@ -45,6 +45,6 @@ dhtDevice = adafruit_dht.DHT22(board.D2)
 if __name__ == "__main__":
     while True:
         json_message = get_temp()
-        if json_message:
+        if json_message is not None:
             send_message(json_message)
         time.sleep(15)
