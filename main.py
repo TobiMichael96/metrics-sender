@@ -9,6 +9,7 @@ import paho.mqtt.publish as publish
 
 def send_message(message):
     publish.single(topic="home/office/clock", hostname=mqtt_hostname, auth=mqtt_auth, payload=message)
+    print(f'Message sent: {message}')
 
 
 def get_temp():
