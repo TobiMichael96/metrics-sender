@@ -16,8 +16,8 @@ def get_temp():
     try:
         temperature = dhtDevice.temperature
         humidity = dhtDevice.humidity
-        temperature = str(round(temperature, 2))
-        humidity = str(round(humidity, 2))
+        temperature = round(temperature, 2)
+        humidity = round(humidity, 2)
         return json.dumps({
             "temperature": temperature,
             "humidity": humidity
