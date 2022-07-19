@@ -8,7 +8,7 @@ import paho.mqtt.publish as publish
 
 
 def send_message(message):
-    publish.single(topic="home/office/sensor1", hostname=mqtt_hostname, port=1883, auth=mqtt_auth, payload=message)
+    publish.single(topic="office/sensor1", hostname=mqtt_hostname, port=1883, auth=mqtt_auth, payload=message)
     print(f'Message sent: {message}')
 
 
