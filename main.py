@@ -7,23 +7,22 @@ import board
 import paho.mqtt.publish as publish
 
 
-def send_message(temperature, humidity):
-    message = {
-        "temperature": temperature,
-        "humidity": humidity
-    }
-    publish.single(topic="home/office/clock", hostname=mqtt_hostname, auth=mqtt_auth, payload=json.dumps(message))
+def send_message(message):
+    publish.single(topic="home/office/clock", hostname=mqtt_hostname, auth=mqtt_auth, payload=message)
 
 
 def get_temp():
     try:
-        temp = dhtDevice.temperature
+        temperature = dhtDevice.temperature
         humidity = dhtDevice.humidity
-        temp = str(round(temp, 2))
+        temperature = str(round(temperature, 2))
         humidity = str(round(humidity, 2))
-        return temp, humidity
+        return json.dumps({
+            "temperature": temperature,
+            "humidity": humidity
+        })
     except RuntimeError:
-        return None, None
+        return None
 
 
 parser = argparse.ArgumentParser(description='Simple Desk-Clock (TME).')
@@ -41,6 +40,10 @@ if len(args.mqtt) == 3:
 # initial device
 dhtDevice = adafruit_dht.DHT22(board.D2)
 
-while True:
-    get_temp()
-    time.sleep(15)
+
+if __name__ == "__main__":
+    while True:
+        json_message = get_temp()
+        if json_message:
+            send_message(json_message)
+        time.sleep(15)
